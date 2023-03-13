@@ -6,8 +6,8 @@ local power_buffer_addr = nil
 
 -- Setup component addresses
 for address, componentType in component.list() do
-    if componentType == "glasses" then glasses_addrs = address end
-    if componentType == 'gt_machine' then power_buffer_addr = address end
+    if componentType == "glasses" then glasses_addr = address end
+    if componentType == "gt_machine" then power_buffer_addr = address end
 end
 
 local maxEU = nil
@@ -31,19 +31,20 @@ function update()
     maxEU = buffer.getEUCapacity()
     currentEU = buffer.getEUStored()
 
-    if #deltaPreviousEU >= 10 then
-        averageChange = (deltaPreviousEU[10] - deltaPreviousEU[1]) / 10
+    if #previousEU >= 10 then
+        averageChange = (previousEU[10] - previousEU[1]) / 10
     end
 
     -- Last 10s of eu
     if lastEU ~= nil then
-        table.insert(deltaPreviousEU, currentEU - lastEU)
-        if #deltaPreviousEU > 10 then
-            table.remove(deltaPreviousEU, 1)
+        table.insert(previousEU, currentEU - lastEU)
+        if #previousEU > 10 then
+            table.remove(previousEU, 1)
         end
     end
 
     lastEU = currentEU
+end
 
 while true do
     update()
