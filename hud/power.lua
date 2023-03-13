@@ -36,7 +36,7 @@ function update()
     end
 
     -- Last 10s of eu
-    if lastEU != nil then
+    if lastEU ~= nil then
         table.insert(deltaPreviousEU, currentEU - lastEU)
         if #deltaPreviousEU > 10 then
             table.remove(deltaPreviousEU, 1)
